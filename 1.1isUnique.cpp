@@ -1,9 +1,6 @@
 /******************************************************************************
-
-                              Online C++ Compiler.
-               Code, Compile, Run and Debug C++ program online.
-Write your code in this editor and press "Run" button to compile and execute it.
-
+Implement an algorithm to determine if a string has all unique characters.
+What if you cannot use additional data structures?
 *******************************************************************************/
 
 #include <iostream>
