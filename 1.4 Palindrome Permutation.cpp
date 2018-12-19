@@ -19,25 +19,21 @@ bool checkPalindromePermutation(string str){
     int histogram[MAX_CHAR] = {0};
     
     for(int i = 0; i < str.length(); i++){
-        if(str[i] == ' '){
+        if(str[i] == ' ')
             continue;
-        }
-        if(isalpha(str[i])){
+        if(isalpha(str[i]))
             histogram[(int)toupper(str[i])]++;  //histogram[int('A')]++
-        }
-        else{
+        else
             histogram[(int)str[i]]++;
-        }
-        len++;
+        len++; // count chars without spaces
     }
     for(int i = 0; i < MAX_CHAR; i++){
-        if(histogram[i] % 2 != 0){
+        if(histogram[i] % 2 != 0)
             odd++;
-        }
     }
-    if(len % 2 == 0){
+    if(len % 2 == 0)
         return (odd == 0);
-    } 
+    
     return (odd == 1);
 }
 

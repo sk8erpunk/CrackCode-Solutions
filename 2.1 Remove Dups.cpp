@@ -41,7 +41,7 @@ ListNode* removeDuplicates(ListNode* head){
 
 
 // Remove duplicates without using additional memory space 
-// Complexity: space memory O(1), time O(N)
+// Complexity: space memory O(1), time O(N^2)
 ListNode* removeDuplicatesNoBuffer(ListNode* head){
     if(!head){
         return NULL;

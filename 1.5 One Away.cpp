@@ -29,8 +29,7 @@ bool checkReplacement(string str1, string str2){
 // str1 is the longer string 
 bool checkOneLetterDifference(string str1, string str2){
     int i = 0, j = 0, diff = 0;
-    int len1 = str1.length(), len2 = str2.length();
-    while(i < len1 && j < len2){
+    while(i < str1.length() && j < str2.length()){
         if(str1[i] != str2[j]){
             if(diff) {          // if already two different letters 
                 return false;
