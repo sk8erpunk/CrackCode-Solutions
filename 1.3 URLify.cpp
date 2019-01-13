@@ -10,15 +10,15 @@ given the true length of the string.
 
 using namespace std;
 
+// Time complexity is O(N) where N is the string size
+// Memory space is O(1)
 void urlify(string& str, int strLen){
     int space_count = 0;
     for(int i = 0; i < strLen; i++){
-        if(str[i] == ' ') {
+        if(str[i] == ' ')
             space_count++;
-        }
     }
-    int pEnd = strLen + 2*space_count;
-    pEnd--;
+    int pEnd = strLen + 2*space_count - 1;
     for(int i = strLen - 1; i >= 0; i--){
         if(str[i] == ' '){
             str[pEnd--] = '0';

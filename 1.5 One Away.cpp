@@ -9,33 +9,31 @@ function to check if they are one edit(or zero edits) away.
 #include <iostream>
 
 using namespace std;
-bool checkReplacement(string str1, string str2){
+
+// check if str1 and str2 has a replacement of one letter
+bool checkReplacement(string& str1, string& str2){
     int i = 0, j = 0;
-    int len1 = str1.length(), len2 = str2.length();
-    int diff = 0;
-    while(i < len1 && j < len2){
-        if(str1[i] != str2[j]){
-            if(diff){
+    bool diff = false;
+    while(i < str1.size() && j < str2.size()){
+        if(str1[i++] != str2[j++]){
+            if(diff) // already found a replacemnet
                 return false;
-            }
-            diff++;
+            diff = true;
         }
-        i++;
-        j++;
     }
     return true;
 }
 
 // str1 is the longer string 
-bool checkOneLetterDifference(string str1, string str2){
-    int i = 0, j = 0, diff = 0;
+bool checkOneLetterDifference(string& str1, string& str2){
+    int i = 0, j = 0;
+	bool diff = false;
     while(i < str1.length() && j < str2.length()){
         if(str1[i] != str2[j]){
-            if(diff) {          // if already two different letters 
+            if(diff)	// already found two different letters 
                 return false;
-            }
-            diff++;
-            i++;
+            diff = true;
+            i++; 		// move str1 ptr
         } else {
             i++;
             j++;
@@ -43,17 +41,20 @@ bool checkOneLetterDifference(string str1, string str2){
     }
     return true;
 }
-bool editOneAway(string str1, string str2){
-    
+
+// Time complexity is O(N) where N is the shorter input
+// Memory space is O(1)
+bool editOneAway(string& str1, string& str2){
     if(str1.length() == str2.length()){
-        return checkReplacement(str1, str2);
+        return checkReplacement(str1, str2);			// replacemnet
     } else if (str1.length() == str2.length() + 1){
-        return checkOneLetterDifference(str1, str2);
+        return checkOneLetterDifference(str1, str2);	// insertion
     } else if (str1.length() == str2.length() - 1){ 
-        return checkOneLetterDifference(str2, str1);
+        return checkOneLetterDifference(str2, str1);	// removal
     }
     return false;
 }
+
 int main()
 {
     string str1 = "pale";

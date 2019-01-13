@@ -16,7 +16,8 @@ struct ListNode {
 
 /*  First solution
 *   Count all the elements then jump Length-K and return node address
-*   Complexity: memory space O(1), time O(N)
+*   Time Complexity is O(N) where N is the list length
+*	Memory space is O(1)
 */ 
 ListNode* kThToLast(ListNode* head, int k){
     if(!head)
@@ -39,30 +40,51 @@ ListNode* kThToLast(ListNode* head, int k){
 
 // Aux function to kThToLastRecursive
 int kThToLastAux(ListNode* head, int k, ListNode** newHead){
-    if(!head){
+    if(!head)
         return 0;
-    }
     int count = kThToLastAux(head->next,k,newHead) + 1;
-    if(count == k){
+    if(count == k)
         *newHead = head;
-    }
     return count;
 }
 
 /*  Second solution
 *   Recusively count k elements from the last element then return address
-*   Complexity: memory space O(N), time O(N) 
+*   Time Complexity is O(N)
+*	Memory space is O(N) (Because of recursive) 
 */
 ListNode* kThToLastRecursive(ListNode* head, int k){
     if(!head)
-        return 0;
+        return NULL;
     ListNode* newHead = NULL;
     kThToLastAux(head, k, &newHead);
     return newHead;
 }
 
-
-
+/*  Third solution
+*   Use two counters with k elements away
+*   Time Complexity is O(N)
+*	Memory space is O(1)
+*/ 
+ListNode* kThToLastPointers(ListNode* head, int k){
+	if(!head) return NULL;
+	ListNode* p1 = head;
+	ListNode* p2 = head;
+	
+	// Move p2 to be k elements away
+	for(int i = 0; i < k; i++){
+		if(!p2) 
+			return NULL;
+		p2 = p2->next;
+	}
+	
+	while(p2){
+		p1 = p1->next;
+		p2 = p2->next;
+	}
+	return p1;
+	
+}
 // Print list
 void printList(ListNode* head){
     while(head){

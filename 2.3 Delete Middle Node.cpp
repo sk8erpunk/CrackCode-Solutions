@@ -19,11 +19,11 @@ struct ListNode {
     ListNode(int x) : val(x), next(NULL) {}
 };
 
-
+// Time complexity is O(1)
+// Memory space is O(1)
 void deleteMiddleNode(ListNode* node){
-    if(!node || node->next == NULL) {    // shouldnt be the last one
+    if(!node || node->next == NULL)   // shouldnt be the last one
         return;
-    }
     node->val = node->next->val;
     node->next = node->next->next;
 }

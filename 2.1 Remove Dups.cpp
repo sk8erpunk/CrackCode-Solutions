@@ -17,44 +17,43 @@ struct ListNode {
     ListNode(int x) : val(x), next(NULL) {}
 };
 
-
 // Remove duplicates using set 
-// Complexity: space memory O(N), time O(N)
+// Time Complexity is O(N) where N is list length
+// Memory space is O(N)
 ListNode* removeDuplicates(ListNode* head){
-    if(!head){
+    if(!head)
         return NULL;
-    }
     set<int> elements;
     ListNode* curr = head;
-    elements.insert(curr->val);
-    while(curr->next != NULL){
-        if(elements.find(curr->next->val) == elements.end()){
-            elements.insert(curr->next->val);
-            curr = curr->next;
-        } else {
-            ListNode* removed = curr->next;
-            curr->next = removed->next;
-        }
-    }
+	ListNode* prev = NULL;
+	while(curr){
+		if(elements.find(curr->val) == elements.end()){
+			elements.insert(curr->val);
+			prev = curr;
+			curr = curr->next;
+		} else {
+			curr = curr->next;
+			prev->next = curr;
+		}
+	}
     return head;
 }
 
-
 // Remove duplicates without using additional memory space 
-// Complexity: space memory O(1), time O(N^2)
+// Time Complexity is O(N^2)
+// Memory space is O(1)
 ListNode* removeDuplicatesNoBuffer(ListNode* head){
-    if(!head){
+    if(!head)
         return NULL;
-    }
-    ListNode* curr = head;
-
-    while(curr != NULL) {
+    
+	ListNode* curr = head;
+    while(curr) {
         ListNode* itr = curr->next;
         ListNode* prev = curr;
-        while(itr != NULL){
+        while(itr){
             if(itr->val == curr->val){
-                prev->next = itr->next;
-                itr = itr->next;
+				itr = itr->next;
+                prev->next = itr;
             } else {
                 prev = itr;
                 itr = itr->next;
@@ -65,14 +64,12 @@ ListNode* removeDuplicatesNoBuffer(ListNode* head){
     return head;
 }
 
-
 // Print list
 void printList(ListNode* head){
     while(head){
         cout << head->val;
-        if(head->next != NULL){
+        if(head->next != NULL)
             cout << "->";
-        }
         head = head->next;
     }
     cout << endl;

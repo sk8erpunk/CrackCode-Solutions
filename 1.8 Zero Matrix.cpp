@@ -23,6 +23,8 @@ void zeroCol(int matrix[][M], int c){
     }
 }
 
+// Time complexity is O(MN)
+// Memory space is O(N+M)
 void zeroMatrix(int matrix[][M]){
     int rows[N] = {0};
     int cols[M] = {0};
