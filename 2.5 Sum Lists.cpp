@@ -22,32 +22,24 @@ struct ListNode {
     ListNode(int x) : val(x), next(NULL) {}
 };
 
-// Aux function which recursively adds two nodes values
+// Recursively adds two nodes values
 ListNode* sumListAux(ListNode* head1, ListNode* head2, int carry){
-    if(!head1 && !head2){   
-        if(carry){  // in case there is a carry at the end
-            return new ListNode(carry);
-        }
-        return NULL;
-    }
-    
-    ListNode* node = new ListNode(0);   // new node for sum
+    if(!head1 && !head2)
+		return carry ? new ListNode(carry) : NULL;
     int sum = carry;
-    if(head1 != NULL){      
+    if(head1)  
         sum += head1->val;
-    }
-    if(head2 != NULL){
+    if(head2)
         sum += head2->val;
-    }
-    node->val = sum % 10;   // in case > 9
-    int d =  sum > MAX_DIGIT ? 1 : 0; // is there a carry?
+	ListNode* node = new ListNode(sum % 10);
     ListNode* next1 = head1 == NULL ? NULL : head1->next;
     ListNode* next2 = head2 == NULL ? NULL : head2->next;
-    ListNode* newNode = sumListAux(next1, next2, d);    
-    node->next = newNode;  
+    node->next = sumListAux(next1, next2, sum > MAX_DIGIT ? 1 : 0);    
     return node;
 }
 
+// Time complexity is O(max(N,M)) where N and M is the lists' lengths accordingly
+// Memory space is O(max(N,M)) 
 ListNode* sumList(ListNode* head1, ListNode* head2){
     return sumListAux(head1, head2, 0);
 }
@@ -63,12 +55,12 @@ void printList(ListNode* head){
     }
     cout << endl;
 }
+
 // Free list
 void destroyList(ListNode* head){
-    ListNode* itr = head;
-    while(itr){
-        ListNode* temp = itr;
-        itr = itr->next;
+    while(head){
+        ListNode* temp = head;
+        head = head->next;
         delete temp;
     }
 }

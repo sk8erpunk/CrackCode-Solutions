@@ -14,35 +14,23 @@ struct ListNode {
     ListNode(int x) : val(x), next(NULL) {}
 };
 
-ListNode* isPalindromeAux(ListNode* head, ListNode* itr){
-    if(!itr->next) { 
-        if(head->val == itr->val){  // compare first to last
-            return head->next;      // if equal return element next to head
-        }
-        else{
-            return NULL;
-        }
-    }
+ListNode* isPalindromeAux(ListNode* p1, ListNode* p2){
+    if(!p2->next)											// if reached last element
+		return p1->val == p2->val ? p1->next : NULL;		// compare p1 val to p2 val
     
-    ListNode* next = isPalindromeAux(head, itr->next);
-    if(!next){   // not equal
-        return NULL;
-    }
-    // compare inner nodes
-    if(next->val == itr->val){
-        return next->next;
-    } else {
-        return NULL;
-    }
-    
+    ListNode* next = isPalindromeAux(p1, p2->next);			// move p2 to last element
+    if(next && next->val == p2->val)   						// if ok until now and current pair is equal
+		return next->next;									// then move p1 
+    else 
+		return NULL; 										// not equal 
 }
 
+// Time complexity is O(N) where N is list length
+// Memory space is O(N) 
 bool isPalindrome(ListNode* head){
-    if(!head || !head->next){ // Empty list or one element
+    if(!head || !head->next)// Empty list or one element
         return true;   
-    }
-    ListNode* ret = isPalindromeAux(head,head->next);
-    return ret == NULL? false : true;
+    return isPalindromeAux(head,head->next) == NULL ? false : true;
 }
 
 // Print list

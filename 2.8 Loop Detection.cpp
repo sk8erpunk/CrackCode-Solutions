@@ -18,6 +18,8 @@ struct ListNode {
     ListNode(int x) : val(x), next(NULL) {}
 };
 
+// Time complexity is O(N)
+// Memory space is O(1)
 ListNode* hasCycle(ListNode* head){
     ListNode* slow = head;
     ListNode* fast = head;

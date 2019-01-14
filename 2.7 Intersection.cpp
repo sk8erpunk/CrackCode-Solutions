@@ -20,40 +20,41 @@ struct ListNode {
 };
 
 // Returns list length and last node address
-int calculateLength(ListNode* head, ListNode** last){
-    ListNode* p = head;
+int findLength(ListNode* head, ListNode** last){
     int len = 1;
-    while(p->next){
+    while(head->next){
         len++;
-        p = p->next;
+        head = head->next;
     }
-    *last = p;
+    *last = head;
     return len;
 }
 
+// Time complexity is O(N+M)) where N and M is the lengths accordingly
+// Memory space is O(1)
 ListNode* returnIntersection(ListNode* head1, ListNode* head2){
-    if(!head1 || !head2){
+    if(!head1 || !head2)
         return NULL;
-    }
-    ListNode* last1, *last2;
-    int len1 = calculateLength(head1, &last1);
-    int len2 = calculateLength(head2, &last2);
 
-    // if both lists do not share the same last then there is no intersection
-    if(last1 != last2){     
+    ListNode* last1, *last2;
+    int len1 = findLength(head1, &last1);
+    int len2 = findLength(head2, &last2);
+
+    // If both have a different last element then no intersection
+    if(last1 != last2)
         return NULL;
-    }
+  
     ListNode* pLong = len1 > len2 ? head1 : head2;
     ListNode* pShort = len1 > len2 ? head2 : head1;
     int steps = abs(len1 - len2); 
    
-    // advance pLong in the longer list
+    // advance pLong 
     while(steps){
         pLong = pLong->next;
         steps--;
     }
     
-    // compare addresses in both list to find an intersection
+    // compare addresses to find an intersection
     while(pLong != pShort){    
         pLong = pLong->next;
         pShort = pShort->next;
