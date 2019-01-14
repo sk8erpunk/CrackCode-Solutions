@@ -14,17 +14,15 @@ using namespace std;
 * v: the number of nodes.
 * adj: an array of v vectors which represents the neighbors of nodes.
 */
-
-class Graph{
-    
+class Graph {
+private:    
     int v;
     vector<int>* adj;
     
-    public:
-    
+public:
     Graph(int v){
         this->v = v;
-        adj = new vector<int>[v];
+        this->adj = new vector<int>[v];
     }
     
     // add edge between u and v
@@ -42,15 +40,14 @@ class Graph{
         return adj[v];
     }
 };
-
-// DFS graph g starting with node w 
+ 
+// DFS g starting with node w
 void dfsUtil(Graph& g, int w, bool* visited){
     visited[w] = true;
     vector<int>& w_adj = g.getNeighbors(w);
     for(int i = 0; i < w_adj.size(); i++){
-        if(visited[w_adj[i]] == false){
+        if(!visited[w_adj[i]])
             dfsUtil(g, w_adj[i], visited);
-        }
     }
 }
 
@@ -58,16 +55,17 @@ void dfsUtil(Graph& g, int w, bool* visited){
 bool ifConnected(Graph& g, int src, int dest){
     int v = g.getV();
     bool* visited = new bool[v];
-    for(int i = 0; i < v; i++){
+    for(int i = 0; i < v; i++)
         visited[i] = false;
-    }
     dfsUtil(g, src, visited);
     return visited[dest];
 }
 
+// Time complexity is O(N) where N is the vertices number
+// Memory space is O(N) 
 // Check if there is a route between u and v.
 bool isRouteExist(Graph& g, int u, int v){
-    return (ifConnected(g, u, v) || ifConnected(g, v, u));
+    return ifConnected(g, u, v) || ifConnected(g, v, u);
 }
 
 // Print graph g
