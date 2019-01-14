@@ -11,45 +11,43 @@ O(1) time.
 
 using namespace std;
 
-class MyStack {
+class MinStack {
     
     stack<int> myStack;     // holds items
     stack<int> minStack;    // holds current minimum 
     
     public: 
-    MyStack(){} 
+	
+    MinStack(){} 
     
     // Pushes item to MyStack
     // Pushes Min(item,minStack.top()) to minStack
     void push(int item){
         myStack.push(item);
-        if(!minStack.empty()){
+        if(!minStack.empty())
             minStack.push(min(item,minStack.top()));
-        } else {
+        else
             minStack.push(item);
-        }
     }
     
     // Pop elements from both stacks 
     void pop(){
-        if(myStack.empty()){
+        if(myStack.empty())
             throw "Stack is empty!";
-        }
         myStack.pop();
         minStack.pop();
     }
     
     // Return current minimum
     int getMin(){
-        if(minStack.empty()){
+        if(minStack.empty())
             throw "stack is empty";
-        }
         return minStack.top();
     }
 }; 
 int main()
 {
-    MyStack s;
+    MinStack s;
     s.push(14);
     s.push(18);
     s.push(33);

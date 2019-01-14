@@ -10,65 +10,49 @@ using namespace std;
 
 class MyQueue{
     
-    stack<int> mainStack;
-    stack<int> auxStack;
-    
-    // shift elements from stack src to stack dest
-    static void reverseStack(stack<int>& src, stack<int>& dest){
-        while(src.empty() == false){
-            dest.push(src.top());
-            src.pop();
-        }
-    }
+    stack<int> newStack;
+    stack<int> oldStack;
     
     public:
     MyQueue() {}
     
-    // queue is empty?
+    // queue is empty? O(1)
     bool isEmpty(){
-        return mainStack.empty();
+        return newStack.empty() && oldStack.empty();
     }
     
-    // queue size
+    // queue size O(1)
     int size(){
-        return mainStack.size();
+        return newStack.size() + oldStack.size();
+    }
+	
+	// shift elements from newStack to oldStack O(N)
+	void shiftStacks(){
+		if(oldStack.empty()){
+			while(!newStack.empty()){
+				oldStack.push(newStack.top());
+				newStack.pop();
+			}
+		}
+	}
+    
+    // pop front element O(N)
+    void popFront() { 
+		shiftStacks();
+		oldStack.pop();
     }
     
-    // pop front element
-    void popFront() {
-        if(mainStack.empty()){
-            throw "Queue is empty!";
-        }
-        // reverse elements to auxStack
-        reverseStack(mainStack, auxStack);
-        
-        // pop the oldest
-        auxStack.pop();
-        
-        // reverse back to mainStack
-        reverseStack(auxStack,mainStack);
-    }
-    
-    // return peek element
+    // return peek element O(N)
     int front(){
-        if(mainStack.empty()){
-            throw "Queue is empty!";
-        }
-        // reverse elements to auxStack
-        reverseStack(mainStack, auxStack);
-       
-        // save the oldest
-        int peek = auxStack.top();
-        
-        // reverse back to mainStack
-        reverseStack(auxStack, mainStack);
-        return peek;
+		shiftStacks();
+		return oldStack.top();
     }
     
-    // push new element to the back
+    // push new element to the back O(1)
     void pushBack(int item){
-        mainStack.push(item);
+		newStack.push(item);
     }
+	
 };
 
 
@@ -83,6 +67,8 @@ int main()
     cout << queue.front() << endl;
     cout << queue.size() << endl;
     cout << queue.isEmpty() << endl;
+    queue.popFront();
+    cout << queue.front() << endl;
 
     return 0;
 }

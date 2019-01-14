@@ -24,41 +24,44 @@ class SetOfStacks {
     int capacity;
     
     public:
-    SetOfStacks(int threshold){
+	
+    SetOfStacks(const int threshold){
         capacity = threshold;
         stackNum = -1;
     }
-    void push(int item){
-        if(stacks.size() == 0 || stacks[stackNum].size() >= capacity){
+	
+    void push(const int item){
+		// if no stacks allocated or current stack is full
+        if(stacks.size() == 0 || stacks[stackNum].size() >= capacity){ 
             stack<int> newStack;
             stacks.push_back(newStack);
             stackNum++;
         }
         stacks[stackNum].push(item);
     }
+	
     void pop(){
-        if(stacks.size() == 0){
+        if(stacks.size() == 0)
             throw "stack is empty!"; 
-        }
-        stacks[stackNum].pop();
-        if(stacks[stackNum].empty()){    // if current stack is empty now remove it
+        stacks[stackNum].pop();			// must be at least one element
+        if(stacks[stackNum].empty()){   // if now it's empty: remove it
             stacks.pop_back();
             stackNum--;
         }
     }
+	
     int getStackNums(){
         return stackNum + 1;
     }
+	
     stack<int>& getStack(int index){
-        if(stacks.size() == 0){
+        if(stacks.size() == 0)
             throw "StackDoesntExistException";
-        }
-        return stacks[index- 1];
+        return stacks[index - 1];
     }
 };
 
 void printStacks(SetOfStacks& s, int stacksNum){
-
     while(stacksNum){
         cout << "stack" << stacksNum << ": "; 
         stack<int>& stack = s.getStack(stacksNum);

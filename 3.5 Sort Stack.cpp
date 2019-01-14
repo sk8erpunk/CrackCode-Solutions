@@ -11,22 +11,25 @@ following operations: push, pop, peek, and isEmpty().
 
 using namespace std;
 
+// Time complexity is O(N^2) where N is the input size
+// Memory space is O(N)
 void sortStack(stack<int>& s){
-    if(s.empty()){
+    if(s.empty())
         throw "Empty stack!";
-    }
+	
     stack<int> temp;
-    while(s.empty() == false){
+    while(!s.empty()){
         int x = s.top();
         s.pop();
-        while(temp.empty() == false && temp.top() > x){
+        while(!temp.empty() && temp.top() > x){
             s.push(temp.top());
             temp.pop();
         }
         temp.push(x);
     }
-    // fill s back with sorted elements in temp 
-    while(temp.empty() == false){
+	
+    // fill s back with sorted elements 
+    while(!temp.empty()){
         s.push(temp.top());
         temp.pop();
     }
