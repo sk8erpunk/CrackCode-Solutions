@@ -26,28 +26,22 @@ public:
     }
     
     // add edge between u and v
-    void addEdge(int u, int v){
-        adj[u].push_back(v);
-    }
+    void addEdge(int u, int v){adj[u].push_back(v);}
     
     // get nodes number
-    int getV(){
-        return v;
-    }
+    int getV(){return v;}
     
     // get neighbors of v
-    vector<int>& getNeighbors(int v){
-        return adj[v];
-    }
+    vector<int>& getNeighbors(int v){return adj[v];}
 };
  
 // DFS g starting with node w
-void dfsUtil(Graph& g, int w, bool* visited){
+void dfs(Graph& g, int w, bool* visited){
     visited[w] = true;
     vector<int>& w_adj = g.getNeighbors(w);
     for(int i = 0; i < w_adj.size(); i++){
         if(!visited[w_adj[i]])
-            dfsUtil(g, w_adj[i], visited);
+            dfs(g, w_adj[i], visited);
     }
 }
 
@@ -57,7 +51,7 @@ bool ifConnected(Graph& g, int src, int dest){
     bool* visited = new bool[v];
     for(int i = 0; i < v; i++)
         visited[i] = false;
-    dfsUtil(g, src, visited);
+    dfs(g, src, visited);
     return visited[dest];
 }
 

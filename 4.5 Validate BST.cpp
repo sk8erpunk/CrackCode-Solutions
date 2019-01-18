@@ -8,58 +8,42 @@ Implement a function to check if a binary tree is a binary search tree
 
 using namespace std;
 
-// Tree Node
-struct Node {
+// Tree TreeNode
+struct TreeNode {
     int val;
-    Node* left;
-    Node* right;
-    Node(int x) : val(x), left(NULL), right(NULL) {}
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-// Recurisve function to validate tree keys 
-int isBSTaux(Node* root, int leftSon, int rightSon){
-    if(root == NULL){   
-        return -1;  // assuming keys are always positive
-    }
+// Recurisve function to validate BST
+bool isBSTaux(TreeNode* root, TreeNode* minNode, TreeNode* maxNode){
+	if(!root) 
+		return true;
+	if(minNode && root->val <= minNode->val)
+		return false;
+	if(maxNode && root->val >= maxNode->val)
+		return false;
+	
+	return isBSTaux(root->left, minNode, root) && isBSTaux(root->right, root, maxNode);
     
-    int min = root->val, max = root->val;
-    int left = isBSTaux(root->left,1,0);
-     // if error then return INT_MIN as error code 
-    if(left == INT_MIN || (left != -1) && (left > root->val)){   
-        return INT_MIN;
-    } else if(left != -1) {
-        min = left;     // declare left value as min
-    }
-    
-    int right = isBSTaux(root->right,0,1);
-     // if error then return INT_MIN as error code 
-    if(right == INT_MIN || (right != -1) && (right <= root->val)){   
-        return INT_MIN;
-    } else if(right != -1) {
-        max = right;     // declare right value as max
-    }
-    
-    if(rightSon){   // if the node is a right son then return current min 
-        return min;
-    } else {        
-        return max;
-    }
 }
 
-// Return true if no error was passed 
-bool isBST(Node* root){
-    return isBSTaux(root,0,0) != INT_MIN;
+// Time complexity is O(N) where N is the tree size
+// Memory space is O(D) where D is the depth of the tree 
+bool isBST(TreeNode* root){
+    return isBSTaux(root, NULL, NULL);
 }
 
 int main()
 {
-    Node root(75);
-    Node left(50);
-    Node leftleft(0);
-    Node leftright(75);
-    Node right(200);
-    Node rightleft(150);
-    Node rightright(300);
+    TreeNode root(75);
+    TreeNode left(50);
+    TreeNode leftleft(0);
+    TreeNode leftright(75);
+    TreeNode right(200);
+    TreeNode rightleft(150);
+    TreeNode rightright(300);
     root.left = &left;
     root.right = &right;
     root.left->left = &leftleft;

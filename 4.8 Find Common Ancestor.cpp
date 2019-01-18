@@ -1,7 +1,7 @@
 /******************************************************************************
 First Common Ancestor 
-Design an algorithm and write code to find the first common ancestor of two nodes
-in a binary tree. Avoid storing additional nodes in a data structure. Note: This 
+Design an algorithm and write code to find the first common ancestor of two TreeNodes
+in a binary tree. Avoid storing additional TreeNodes in a data structure. Note: This 
 is not necessarily a binary search tree.
 *******************************************************************************/
 #include <stdio.h>
@@ -10,38 +10,38 @@ is not necessarily a binary search tree.
 
 using namespace std;
 
-// Tree Node
-struct Node {
+// TreeNode
+struct TreeNode {
     int val;
-    Node* left;
-    Node* right;
-    Node* parent;
-    Node(int x) : val(x), left(NULL), right(NULL), parent(NULL) {}
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode* parent;
+    TreeNode(int x) : val(x), left(NULL), right(NULL), parent(NULL) {}
 };
 
-// get node depth
-int getHeight(Node* node){
-    int h = 0;
-    Node* n = node;
-    while(n->parent){
-        h++;
-        n = n->parent;
+// return root depth
+int findDepth(TreeNode* root){
+    int d = 0;
+    while(root->parent){
+        d++;
+        root = root->parent;
     }
-    return h;
+    return d;
 }
 
-Node* findFirstCommonAncestor(Node* node1, Node* node2){
-    if(!node1 || !node2){
-        return NULL;
-    }
-    // find the nodes depths 
-    int h1,h2;
-    h1 = getHeight(node1);  
-    h2 = getHeight(node2);
+
+// Time complexity is O(D) where D is the depth of the deeper node 
+// Memory space is O(D)
+TreeNode* findFirstCommonAncestor(TreeNode* node1, TreeNode* node2){
+    if(!node1 || !node2) return NULL;
+ 
+    // find node's depths 
+    int d1 = findDepth(node1);  
+    int d2 = findDepth(node2);
     
-    int distance = abs(h1-h2);
-    Node* deeper = h1 > h2 ? node1 : node2;
-    Node* closer = h1 > h2 ? node2 : node1;
+    int distance = abs(d1-d2);
+    TreeNode* deeper = d1 > d2 ? node1 : node2;
+    TreeNode* closer = d1 > d2 ? node2 : node1;
     
     // move deeper node to the same level as closer node 
     while(distance){
@@ -59,14 +59,14 @@ Node* findFirstCommonAncestor(Node* node1, Node* node2){
 
 int main()
 {
-    Node root(1);
-    Node left(2);
-    Node leftleft(0);
-    Node leftright(70);
-    Node leftrightright(90);
-    Node leftrightleft(44);
-    Node leftrightleftright(50);
-    Node right(200);
+    TreeNode root(1);
+    TreeNode left(2);
+    TreeNode leftleft(0);
+    TreeNode leftright(70);
+    TreeNode leftrightright(90);
+    TreeNode leftrightleft(44);
+    TreeNode leftrightleftright(50);
+    TreeNode right(200);
     root.left = &left;
     root.right = &right;
     root.left->left = &leftleft;

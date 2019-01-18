@@ -2,7 +2,7 @@
 Check Balanced 
 Implement a function to check if a binary tree is balanced. For the purposes of 
 this question, a balanced tree is defined to be a tree such that the heights of 
-the two subtrees of any node never differ by more than one.
+the two subtrees of any TreeNode never differ by more than one.
 *******************************************************************************/
 #include <stdio.h>
 #include <iostream>
@@ -12,64 +12,59 @@ the two subtrees of any node never differ by more than one.
 
 using namespace std;
 
-// Tree Node
-struct Node {
+// Tree TreeNode
+struct TreeNode {
     int val;
-    Node* left;
-    Node* right;
-    Node(int x) : val(x), left(NULL), right(NULL) {}
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-
-// Returns the height of the tree if it's balanced 
-int checkBalancedAux(Node* root){
-    if(root == NULL){   // If it is a leaf 
-        return -1;
-    }
-    
-    int left_height = checkBalancedAux(root->left) + 1;
-    if(left_height == INT_MAX){ // If left subtree isn't balanced 
-        return INT_MAX;         // Return error value
-    }
-    int right_height = checkBalancedAux(root->right) + 1;
-    if(right_height == INT_MAX){    // If left subtree isn't balanced 
-        return INT_MAX;             // Return error value
-    }
-    if(abs(left_height - right_height) > 1){    
-        return INT_MAX;         // Return error value
-    }
-    return max(left_height,right_height);
+// Returns the height of the tree if it's balanced else INT_MAX as error code 
+int findHeight(TreeNode* root){
+	if(!root) return 0;
+	
+	int l = findHeight(root->left) + 1;
+	if(l == INT_MAX)						// If Error return ErrorCode
+		return INT_MAX;
+	int r = findHeight(root->right) + 1;
+	if(r == INT_MAX)
+		return INT_MAX;
+	if(abs(l-r) > 1)						// Check balance condition
+		return INT_MAX;
+		
+	return max(l,r);
 }
 
 // Returns if the tree is balanced or not
-bool checkBalanced(Node* root){
-    return checkBalancedAux(root) != INT_MAX;   
+// Time complexity is O(N) where N is the tree size
+// Memory space is O(H) where H is the tree height
+bool checkBalanced(TreeNode* root){
+    return findHeight(root) != INT_MAX;   
 }
-
 
 int main()
 {
-        // Tree
-    Node root(0);
-    Node left(1);
-    Node right(2);
-    Node leftleft(11);
-    Node leftleftleft(111);
-    Node leftright(12);
-    Node leftleftright(112);
+    // Tree
+    TreeNode root(0);
+    TreeNode left(1);
+    TreeNode right(2);
+    TreeNode leftleft(11);
+    TreeNode leftleftleft(111);
+    TreeNode leftright(12);
+    TreeNode leftleftright(112);
     root.left = &left;
     root.right = &right;
     root.left->left = &leftleft;  
     root.left->left->left = &leftleftleft;  
     root.left->right = &leftright;
     root.left->left->right = &leftleftright; 
-    //Node rightleft(21);
-    //root.right->left = &rightleft;
+    TreeNode rightleft(21);
+    root.right->left = &rightleft;
     
-    if(checkBalanced(&root)){
+    if(checkBalanced(&root))
         cout << "True";
-    } else {
+    else
         cout << "False";
-    }
     return 0;
 }

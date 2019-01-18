@@ -8,53 +8,73 @@ lists).
 #include <iostream>
 #include <list>
 #include <map>
+#include <vector>
 
 using namespace std;
 
 // Tree Node
-struct Node {
+struct TreeNode {
     int val;
-    Node* left;
-    Node* right;
-    Node(int x) : val(x), left(NULL), right(NULL) {}
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
-// Create linked list of nodes in every depth
-map<int,list<int>> listOfDepths(Node* root){
-    // BFS queue: holds pairs of (node,depth)
-    list<pair<Node*,int>> queue;
-    
+// Create linked list of nodes in every depth using BFS
+// Time complexity is O(N) where N is the tree size
+// Memory space is O(N) (using queue) 
+map<int,list<int>> listOfDepthsBFS(TreeNode* root){
     // a map which maps depth to list of values in that depth
-    map<int, list<int>> depthMap;
-
-    // add root to queue
-    pair<Node*,int> p(root,0);
-    queue.push_back(p);
+    map<int, list<int>> depthMap;	
+	
+    list<TreeNode*> queue;
+    queue.push_back(root);
     
-    // add root->val to depth list in map
-    depthMap[0].push_back(root->val);
+	int level = 0;
  
     // BFS iterations  
-    while(queue.empty() == false){
-        Node* node = queue.front().first;
-        int node_depth = queue.front().second;
-
-        if(node->left){
-            // add left node to map and to queue
-            depthMap[node_depth + 1].push_back(node->left->val);
-            pair<Node*,int> left(node->left, node_depth+1);
-            queue.push_back(left);
-        }
-        if(node->right){            
-            // add right node to map and to queue
-            depthMap[node_depth + 1].push_back(node->right->val);
-            pair<Node*,int> right(node->right, node_depth+1);
-            queue.push_back(right);
-        }
-        queue.pop_front();
+    while(!queue.empty()){
+		int n = queue.size();
+		list<int> currList;
+		for(int i = 0; i < n; i++){
+			TreeNode* node = queue.front();
+			queue.pop_front();
+			currList.push_back(node->val);
+			if(node->left)
+				queue.push_back(node->left);
+			if(node->right)         
+				queue.push_back(node->right);	
+		}
+		// Add current level
+		depthMap[level++] = currList;
     }
 
     return depthMap;
+}
+
+// DFS AUX
+void createLists(TreeNode* root, vector<vector<int>>& lists, int level){
+	if(!root) return;
+	
+	if(lists.size() > level){
+		vector<int>& levelList = lists[level];
+		levelList.push_back(root->val);
+	} else {
+		vector<int> newLevelList;
+		newLevelList.push_back(root->val);
+		lists.push_back(newLevelList);
+	}
+	createLists(root->left, lists, level + 1);
+	createLists(root->right, lists, level + 1);
+}
+
+// Create linked list of nodes in every depth using DFS
+// Time complexity is O(N) where N is the tree size
+// Memory space is O(LogN)  
+vector<vector<int>> listOfDepthsDFS(TreeNode* root) {
+	vector<vector<int>> res;
+	createLists(root, res, 0);
+	return res;
 }
 
 // Print result
@@ -74,12 +94,12 @@ void printResult(map<int,list<int>>& linkedLists){
 int main()
 {
     // Tree
-    Node root(0);
-    Node left(10);
-    Node right(20);
-    Node leftleft(55);
-    Node leftright(11);
-    Node rightright(66);
+    TreeNode root(0);
+    TreeNode left(10);
+    TreeNode right(20);
+    TreeNode leftleft(55);
+    TreeNode leftright(11);
+    TreeNode rightright(66);
     root.left = &left;
     root.right = &right;
     root.left->left = &leftleft;  
@@ -87,7 +107,7 @@ int main()
     root.right->right = &rightright;
     
     // Result: a map of <depth, list of nodes in that depth>
-    map<int,list<int>> linkedLists = listOfDepths(&root);
+    map<int,list<int>> linkedLists = listOfDepthsBFS(&root);
     
     // Print map
     printResult(linkedLists);
